@@ -1,33 +1,22 @@
 import java.sql.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception,SQLException {
+        String url = "jdbc:mysql://localhost:3306/?user=root";
+        String userName = "root";
+        String password = "Kurczak12@";
 
-        Connection connection = getConnection();
+        Connect connect = new Connect(url,userName,password);
 
-        Statement statement = connection.createStatement();
-       // PreparedStatement preparedStatement = connection.prepareStatement("use users");
+        Connection connection = connect.getConnection();
+        Statement statement =  connection.createStatement();
         statement.executeUpdate("use users");
 
 
-        ResultSet rs = statement.executeQuery("select * from Users");
 
+        UserService userService = new UserService(connection,statement);
+
+        userService.systemLogIn();
     }
-    public static Connection getConnection(){
-        try {
-            String url = "jdbc:mysql://localhost:3306/?user=root";
-            System.out.println(DriverManager.getDriver(url));
-            String userName = "root";
-            String password = "Kurczak12@";
-            Class.forName("com.mysql.cj.jdbc.Driver");
 
-            Connection con = DriverManager.getConnection(url,userName,password);
-            System.out.println("Connected with data base");
-            return con;
-        } catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
-
-    }
 }
